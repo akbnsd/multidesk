@@ -62,6 +62,7 @@ if __name__ == "__main__":
                 controller.sendJ(dev.frmQue.get())
                 pass
             except (BrokenPipeError, ConnectionResetError):
+                dev.run=False
                 break
     
 
