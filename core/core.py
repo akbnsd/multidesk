@@ -1,4 +1,5 @@
 from tkinter import *
+import mouse as ms
 
 class core:
     
@@ -11,10 +12,14 @@ class core:
         pass
 
     def mouseInput(cords):
-        dx = cords.x - core.x
-        dy = cords.y - core.y
-        core.x, core.y = cords.x, cords.y
+        x, y = ms.get_position()
+        dx = x - core.x
+        dy = y - core.y
+        core.x, core.y = x, y
+        ms.move(-dx, -dy, absolute=False)
 
     def unlockInput(e):
         core.win.unbind('<KeyPress>')
         core.win.unbind('<Motion>')
+        core.win.config(cursor='arrow')
+

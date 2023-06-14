@@ -1,9 +1,9 @@
 from tkinter import Tk
-import core as cr
-
+from .core import core
 
 def lockInput( window : Tk):
-    cr.win = window
-    cr.win.bind('<Escape>', cr.unlockInput)
-    cr.win.bind('<KeyPress>', cr.keyInput)
-    cr.win.bind('<Motion>', cr.mouseInput)
+    core.win = window
+    core.win.bind('<Escape>', core.unlockInput)
+    core.win.bind('<KeyPress>', core.keyInput)
+    core.win.bind('<Motion>', core.mouseInput)
+    core.win.config(cursor="none")
