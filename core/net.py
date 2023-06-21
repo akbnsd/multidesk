@@ -1,7 +1,7 @@
-import json
 from socket import *
 from types import SimpleNamespace
 import pickle
+import platform
 
 
 # sock class for network interfacing 
@@ -23,10 +23,11 @@ class sock:
         self.udp = socket(AF_INET, SOCK_DGRAM )
 
         self.udp.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-        self.tcp.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.tcp.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
-        self.udp.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.udp.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
+        if platform.system() == "Linux":
+            self.tcp.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+            self.tcp.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
+            self.udp.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+            self.udp.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
 
         self.tcp.bind(('', port))
         self.udp.bind(('', port))

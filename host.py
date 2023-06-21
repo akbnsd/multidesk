@@ -7,6 +7,7 @@ from threading import Thread
 import time
 import queue
 import pickle
+import re
 
 broadcastAddress = ("255.255.255.255", 23000)
 remAddr = ()
@@ -41,8 +42,29 @@ def listenCont():
 
 
 dev = screenCapture.capture()
-dev.setFps(30)
+dev.setFps(40)
 
+
+def recvInput():
+    global broadcast
+    while not broadcast:
+        data = controller.recvJ()
+        if data is None:
+            continue
+        if data == "left down":
+            pg.mouseDown(button="left")
+        elif data == "left up":
+            pg.mouseUp(button='left')
+        elif data == "right down":
+            pg.mouseDown(button='right')
+        elif data == "right up":
+            pg.mouseDown(button='right')
+        else:
+            try:
+                pos = re.findall('[\d.]*', data)
+                pg.moveTo(int(pos[0]),int(pos[2]))
+            except ValueError:
+                continue
 
 if __name__ == "__main__":
     
@@ -56,6 +78,8 @@ if __name__ == "__main__":
         
         dev.run = True
         dev.beginCapture()
+        recvInputThrd = Thread(target=recvInput)
+        recvInputThrd.start()
         
         while True:
             try:
